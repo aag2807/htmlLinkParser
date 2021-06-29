@@ -1,3 +1,40 @@
+package main
+
+import (
+	"fmt"
+	"linkParser"
+	"strings"
+)
+
+var exampleHtml1 = `
+<html>
+<body>
+  <h1>Hello!</h1>
+  <a href="/other-page">A link to another page</a>
+</body>
+</html>
+`
+
+var exampleHtml2 = `
+<html>
+    <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+      <h1>Social stuffs</h1>
+      <div>
+        <a href="https://www.twitter.com/joncalhoun">
+          Check me out on twitter
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="https://github.com/gophercises">
+          Gophercises is on <strong>Github</strong>!
+        </a>
+      </div>
+    </body>
+    </html>
+`
+var exampleHtml3 = `
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie ie6 lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="ie ie7 lt-ie9 lt-ie8"        lang="en"> <![endif]-->
@@ -60,3 +97,43 @@
   </section>
 </body>
 </html>
+`
+
+var exampleHtml4 = `
+<html>
+<body>
+  <a href="/dog-cat">dog cat <!-- commented text SHOULD NOT be included! --></a>
+</body>
+</html>
+`
+
+func main() {
+	reader1 := strings.NewReader(exampleHtml1)
+	reader2 := strings.NewReader(exampleHtml2)
+	reader3 := strings.NewReader(exampleHtml3)
+	reader4 := strings.NewReader(exampleHtml4)
+
+	links1, err := linkParser.Parse(reader1)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(links1)
+
+	links2, err := linkParser.Parse(reader2)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(links2)
+
+	links3, err := linkParser.Parse(reader3)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(links3)
+
+	links4, err := linkParser.Parse(reader4)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(links4)
+}
